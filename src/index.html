@@ -13,7 +13,7 @@
   <style>
     html
       { scroll-behavior: smooth; }
-    
+
     body {
       font-family: 'Segoe UI', sans-serif;
       color: #000000;
@@ -24,15 +24,22 @@
     [data-theme="light"] p, [data-theme="light"] ul, [data-theme="light"] li,
     [data-theme="light"] h1, [data-theme="light"] h2, [data-theme="light"] h3,
     [data-theme="light"] button { color: #000000 !important; }
+    /* Textfarbe für Input-Felder im Light Mode */
+    [data-theme="light"] input, [data-theme="light"] textarea { color: #000000 !important; }
+
 
     [data-theme="dark"] body { color: #ffffff; }
 
     [data-theme="dark"] p, [data-theme="dark"] ul, [data-theme="dark"] li,
     [data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3,
     [data-theme="dark"] button { color: white !important; }
+    /* Textfarbe für Input-Felder im Dark Mode ist auch schwarz */
+    [data-theme="dark"] input, [data-theme="dark"] textarea { color: #000000 !important; }
+
 
     a, button { cursor: none !important; }
-    input, textarea { caret-color: transparent; }
+    /* caret-color wurde entfernt, damit der Cursor sichtbar ist */
+    /* input, textarea { caret-color: transparent; } */
 
     #cursor {
       width: 16px;
@@ -142,140 +149,180 @@
       perspective: 800px;
     }
 
-    
-    #cursor-text {
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-}
 
     #cursor-text {
-  font-size: 12px;
-  padding: 2px 6px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 6px;
-  backdrop-filter: blur(4px);
-}
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    #cursor-text {
+      font-size: 12px;
+      padding: 2px 6px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+    }
 
 
-    
-.chat-input-wrapper:hover {
-  box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
-}
-.chat-input-wrapper:focus-within {
-  box-shadow: 0 0 0 2px rgba(59,130,246,0.5);
-  transform: scale(1.03);
-}
 
-[data-tooltip]::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%) scale(0.95);
-    background-color: white;
-    color: black;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    opacity: 0;
-    transition: all 0.2s ease;
-    pointer-events: none;
-    z-index: 50;
-  }
+    .chat-input-wrapper:hover {
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+    }
+    .chat-input-wrapper:focus-within {
+      box-shadow: 0 0 0 2px rgba(59,130,246,0.5);
+      transform: scale(1.03);
+    }
 
-  [data-tooltip]:hover::after {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-  }
+    [data-tooltip]::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%) scale(0.95);
+        background-color: white;
+        color: black;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        opacity: 0;
+        transition: all 0.2s ease;
+        pointer-events: none;
+        z-index: 50;
+      }
 
-  [data-tooltip]::before {
-    content: "";
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 6px;
-    border-style: solid;
-    border-color: white transparent transparent transparent;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    z-index: 49;
-  }
+      [data-tooltip]:hover::after {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+      }
 
-  [data-tooltip]:hover::before {
-    opacity: 1;
-  }
-  /* Adjusted for centering */
-  .me {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-left: auto; /* Added for horizontal centering */
-    margin-right: auto; /* Added for horizontal centering */
-  }
+      [data-tooltip]::before {
+        content: "";
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 6px;
+        border-style: solid;
+        border-color: white transparent transparent transparent;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        z-index: 49;
+      }
 
-  /* Slideshow CSS */
-  .slideshow-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
-  }
+      [data-tooltip]:hover::before {
+        opacity: 1;
+      }
+      /* Adjusted for centering */
+      .me {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        margin-left: auto; /* Added for horizontal centering */
+        margin-right: auto; /* Added for horizontal centering */
+      }
 
-  .slideshow-inner {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 1rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  }
+      /* Slideshow CSS */
+      .slideshow-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2rem;
+      }
 
-  .slideshow-image {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0; /* Hidden by default */
-    transition: opacity 1s ease-in-out; /* Smooth transition for opacity */
-  }
+      .slideshow-inner {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        overflow: hidden;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
 
-  .slideshow-image.active {
-    opacity: 1; /* Active image is visible */
-  }
-/* Scroll progress bar */
-#scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 6px;
-  width: 0%;
-  z-index: 9999;
-  background: linear-gradient(90deg, #696969, #bab8bb, #fcf9fb);
-  box-shadow: 0 0 8px rgba(139, 139, 139, 0.6);
-  border-radius: 0 4px 4px 0;
-  transition: width 0.15s ease-out, background 1s linear;
-  animation: shine 3s infinite linear;
-  background-size: 200% 100%;
-}
-@keyframes shine {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
-/* Webkit Scrollbars komplett ausblenden */
-::-webkit-scrollbar {
-  display: none;
-}
+      .slideshow-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0; /* Hidden by default */
+        transition: opacity 1s ease-in-out; /* Smooth transition for opacity */
+      }
 
-/* Optional: für Firefox */
-html {
-  scrollbar-width: none;
-}
+      .slideshow-image.active {
+        opacity: 1; /* Active image is visible */
+      }
+    /* Scroll progress bar */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 6px;
+      width: 0%;
+      z-index: 9999;
+      background: linear-gradient(90deg, #696969, #bab8bb, #fcf9fb);
+      box-shadow: 0 0 8px rgba(139, 139, 139, 0.6);
+      border-radius: 0 4px 4px 0;
+      transition: width 0.15s ease-out, background 1s linear;
+      animation: shine 3s infinite linear;
+      background-size: 200% 100%;
+    }
+    @keyframes shine {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    /* Webkit Scrollbars komplett ausblenden */
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
+    /* Optional: für Firefox */
+    html {
+      scrollbar-width: none;
+    }
+
+    /* Modal spezifische Stile */
+    .modal-card {
+      background-color: #ffffff; /* Light mode default */
+      border: 1px solid #e2e8f0; /* Light border */
+      transition: background-color 0.3s, border-color 0.3s, transform 0.3s ease-out, opacity 0.3s ease-out;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border-radius: 1rem; /* Stärkere Abrundung */
+      transform: translateY(-20px) scale(0.95); /* Initial hidden state for animation */
+      opacity: 0;
+      pointer-events: none; /* Disable interaction when hidden */
+    }
+
+    [data-theme="dark"] .modal-card {
+      background-color: #1e293b; /* Dark mode background */
+      border-color: #475569; /* Darker border */
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-card.active {
+      transform: translateY(0) scale(1); /* Active visible state */
+      opacity: 1;
+      pointer-events: auto; /* Enable interaction when active */
+    }
+
+    /* Input field styling for modals */
+    .modal-input {
+      background-color: #f8fafc; /* Light background for inputs in light mode */
+      border-color: #cbd5e1; /* Subtle border */
+    }
+
+    [data-theme="dark"] .modal-input {
+      background-color: #0f172a; /* Darker background for inputs in dark mode */
+      border-color: #334155; /* Darker subtle border */
+    }
+
+    .modal-input:focus {
+      outline: none;
+      border-color: #3b82f6; /* Blue focus border */
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* Blue glow on focus */
+    }
   </style>
 </head>
 
@@ -419,42 +466,94 @@ html {
 
   <div
     id="login-modal"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50 transition-opacity duration-300"
   >
-    <div id="login-card-content" class="rounded-lg w-80 p-6">
+    <div id="login-card-content" class="modal-card w-80 p-6">
       <h2 class="text-lg font-semibold mb-4">Login</h2>
-      <form>
+      <form id="login-form">
         <div class="mb-4">
-          <label for="username" class="block text-sm">Benutzername</label>
+          <label for="login-username" class="block text-sm">Benutzername</label>
           <input
             type="text"
-            id="username"
-            class="w-full mt-1 px-3 py-2 border rounded text-black dark:text-white"
+            id="login-username"
+            class="w-full mt-1 px-3 py-2 border rounded modal-input"
             placeholder="Dein Benutzername"
           />
         </div>
         <div class="mb-4">
-          <label for="password" class="block text-sm">Passwort</label>
+          <label for="login-password" class="block text-sm">Passwort</label>
           <input
             type="password"
-            id="password"
-            class="w-full mt-1 px-3 py-2 border rounded text-black dark:text-white"
+            id="login-password"
+            class="w-full mt-1 px-3 py-2 border rounded modal-input"
             placeholder="Dein Passwort"
           />
         </div>
-        <div class="flex justify-end">
+    <button
+  type="button"
+  id="open-register-modal"
+  class="px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-200 text-sm font-medium border border-transparent dark:border-gray-700"
+>
+  Registrieren
+</button>
+            <button
+              type="button"
+              id="login-close"
+              class="px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-200 text-sm font-medium"
+            >
+              Abbrechen
+            </button>
+            <button
+              type="submit"
+              id="login-submit"
+              class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200 text-sm font-medium"
+            >
+              Anmelden
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div
+    id="register-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50 transition-opacity duration-300"
+  >
+    <div id="register-card-content" class="modal-card w-80 p-6">
+      <h2 class="text-lg font-semibold mb-4">Registrieren</h2>
+      <form id="register-form">
+        <div class="mb-4">
+          <label for="register-username" class="block text-sm">Benutzername</label>
+          <input
+            type="text"
+            id="register-username"
+            class="w-full mt-1 px-3 py-2 border rounded modal-input"
+            placeholder="Wähle einen Benutzernamen"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="register-password" class="block text-sm">Passwort</label>
+          <input
+            type="password"
+            id="register-password"
+            class="w-full mt-1 px-3 py-2 border rounded modal-input"
+            placeholder="Wähle ein Passwort"
+          />
+        </div>
+        <div class="flex justify-end mt-6">
           <button
             type="button"
-            id="login-close"
-            class="mr-2 px-4 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+            id="register-close"
+            class="px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-200 text-sm font-medium"
           >
             Abbrechen
           </button>
           <button
-            type="button"
-            class="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+            type="submit"
+            class="ml-2 px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200 text-sm font-medium"
           >
-            Anmelden
+            Registrieren
           </button>
         </div>
       </form>
@@ -462,20 +561,140 @@ html {
   </div>
 
   <script>
-    // Toggle Login-Modal
+    // Get elements for login and register modals
     const loginButton = document.getElementById('login-button');
     const loginModal = document.getElementById('login-modal');
+    const loginCardContent = document.getElementById('login-card-content'); // Get the modal content
     const loginClose = document.getElementById('login-close');
-    loginButton.addEventListener('click', () => {
-      loginModal.classList.remove('hidden');
-    });
+    const loginForm = document.getElementById('login-form');
+    const loginUsernameInput = document.getElementById('login-username');
+    const loginPasswordInput = document.getElementById('login-password');
+
+    const registerModal = document.getElementById('register-modal');
+    const registerCardContent = document.getElementById('register-card-content'); // Get the modal content
+    const registerClose = document.getElementById('register-close');
+    const registerForm = document.getElementById('register-form');
+    const registerUsernameInput = document.getElementById('register-username');
+    const registerPasswordInput = document.getElementById('register-password');
+    const openRegisterModalButton = document.getElementById('open-register-modal');
+
+    // Function to get users from localStorage
+    function getUsers() {
+      const usersJson = localStorage.getItem('users');
+      return usersJson ? JSON.parse(usersJson) : [];
+    }
+
+    // Function to save users to localStorage
+    function saveUsers(users) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    // Function to open modal with animation
+    function openModal(modalElement, cardElement) {
+        modalElement.classList.remove('hidden');
+        setTimeout(() => {
+            modalElement.classList.add('opacity-100');
+            cardElement.classList.add('active');
+        }, 10); // Small delay to allow 'display: block' to apply before transition
+    }
+
+    // Function to close modal with animation
+    function closeModal(modalElement, cardElement) {
+        modalElement.classList.remove('opacity-100');
+        cardElement.classList.remove('active');
+        setTimeout(() => {
+            modalElement.classList.add('hidden');
+        }, 300); // Match this with your CSS transition duration
+    }
+
+    // Function to update the login button text and functionality
+    function updateLoginButton() {
+      const loggedInUser = localStorage.getItem('loggedInUser');
+      if (loggedInUser) {
+        loginButton.textContent = `Logout (${loggedInUser})`;
+        loginButton.onclick = function() {
+          localStorage.removeItem('loggedInUser');
+          window.location.reload(); // Reload the page to reflect logout
+        };
+      } else {
+        loginButton.textContent = 'Login';
+        loginButton.onclick = function() {
+          openModal(loginModal, loginCardContent);
+        };
+      }
+    }
+
+    // Initial call to update the button on page load
+    updateLoginButton();
+
+    // Event listeners for Login Modal
     loginClose.addEventListener('click', () => {
-      loginModal.classList.add('hidden');
+      closeModal(loginModal, loginCardContent);
     });
-    // Klick außerhalb des Modals schließt es
+
     loginModal.addEventListener('click', e => {
       if (e.target === loginModal) {
-        loginModal.classList.add('hidden');
+        closeModal(loginModal, loginCardContent);
+      }
+    });
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = loginUsernameInput.value;
+      const password = loginPasswordInput.value;
+      const users = getUsers();
+
+      const user = users.find(u => u.username === username && u.password === password);
+
+      if (user) {
+        localStorage.setItem('loggedInUser', username);
+        closeModal(loginModal, loginCardContent);
+        updateLoginButton();
+        alert(`Willkommen zurück, ${username}!`);
+      } else {
+        alert('Falscher Benutzername oder Passwort!');
+      }
+    });
+
+    // Event listeners for Register Modal
+    openRegisterModalButton.addEventListener('click', () => {
+      closeModal(loginModal, loginCardContent); // Close login modal first
+      openModal(registerModal, registerCardContent); // Open register modal
+    });
+
+    registerClose.addEventListener('click', () => {
+      closeModal(registerModal, registerCardContent);
+    });
+
+    registerModal.addEventListener('click', e => {
+      if (e.target === registerModal) {
+        closeModal(registerModal, registerCardContent);
+      }
+    });
+
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = registerUsernameInput.value;
+      const password = registerPasswordInput.value;
+      const users = getUsers();
+
+      if (username.length < 3 || password.length < 4) {
+        alert('Benutzername muss mindestens 3 Zeichen und Passwort mindestens 4 Zeichen lang sein.');
+        return;
+      }
+
+      const existingUser = users.find(u => u.username === username);
+
+      if (existingUser) {
+        alert('Dieser Benutzername existiert bereits!');
+      } else {
+        users.push({ username, password });
+        saveUsers(users);
+        alert('Registrierung erfolgreich! Du kannst dich jetzt anmelden.');
+        closeModal(registerModal, registerCardContent);
+        openModal(loginModal, loginCardContent); // Open login modal after successful registration
+        loginUsernameInput.value = username; // Pre-fill username for convenience
+        loginPasswordInput.value = ''; // Clear password field
       }
     });
   </script>
@@ -609,22 +828,10 @@ window.addEventListener('scroll', () => {
       localStorage.setItem("theme", newTheme);
     });
 
-    // This block of code for cube drag-rotation seems unrelated to the provided HTML elements.
-    // If you have a cube element elsewhere, ensure its HTML and relevant styles are present.
-    const cube = document.querySelector(".loader-cube"); 
-    let isDragging = false;
-    let rotationX = 0;
-    let rotationY = 0;
-    let autoRotate = true;
-    let lastX, lastY;
-
-
     const cursorText = document.getElementById("cursor-text");
     const gptButton = document.getElementById("openMichaelGPT");
 
     document.addEventListener("mousemove", (e) => {
-      // The cursor positioning is now handled by the new custom cursor script.
-      // This line is for the cursorText.
       cursorText.style.transform = `translate(${e.clientX}px, ${e.clientY - 30}px)`; // Position leicht über Cursor
     });
 
@@ -640,37 +847,21 @@ window.addEventListener('scroll', () => {
       cursorText.style.opacity = "0";
     });
 
-    // Ensure this element exists in your HTML if you want to use TypeIt
-    // new TypeIt("#typed-text", {
-    //   strings: ["Application Developer from Switzerland"],
-    //   speed: 50,
-    //   waitUntilVisible: true,
-    //   loop: false,
-    // }).go();
-
-
-    // Slideshow Logic - CORRECTED AND PLACED HERE
+    // Slideshow Logic
     const slides = document.querySelectorAll('#slideshow .slideshow-image');
     let currentSlide = 0;
 
-    // Ensure there are slides to work with
     if (slides.length > 0) {
-        // Initially show the first slide
         slides[currentSlide].classList.add('active');
 
         setInterval(() => {
-            // Hide the current slide
             slides[currentSlide].classList.remove('active');
-
-            // Move to the next slide
             currentSlide = (currentSlide + 1) % slides.length;
-
-            // Show the next slide
             slides[currentSlide].classList.add('active');
-        }, 4000); // Change image every 4 seconds (4000ms)
+        }, 4000);
     }
-    
+
   </script>
-  
+
 </body>
 </html>
