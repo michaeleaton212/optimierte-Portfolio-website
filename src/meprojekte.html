@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Michael Eaton – Projects</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      /* Default text color for light mode body, can be adjusted */
+      color: #000000; 
+      transition: background-color 0.3s, color 0.3s;
+      cursor: none;
+    }
+
+    [data-theme="light"] p,
+    [data-theme="light"] ul,
+    [data-theme="light"] li,
+    [data-theme="light"] h1,
+    [data-theme="light"] h2,
+    [data-theme="light"] h3,
+    [data-theme="light"] h4,
+    [data-theme="light"] button {
+      color: #000000 !important;
+    }
+
+    [data-theme="dark"] body {
+      color: #ffffff;
+    }
+
+    [data-theme="dark"] p,
+    [data-theme="dark"] ul,
+    [data-theme="dark"] li,
+    [data-theme="dark"] h1,
+    [data-theme="dark"] h2,
+    [data-theme="dark"] h3,
+    [data-theme="dark"] h4,
+    [data-theme="dark"] button {
+      color: white !important;
+    }
+
+    /* Diese spezifischen Regeln für Modal-Inhalt im Dark Mode wurden entfernt oder angepasst,
+       da sie schwarzen Text auf dunklem Hintergrund verursachten.
+       Die generellen [data-theme="dark"] Regeln (s.o.) machen den Text nun weiß.
+    */
+    /* ENTFERNT:
+    [data-theme="dark"] #modal-content {
+      color: rgb(0, 0, 0) !important;
+    }
+    [data-theme="dark"] #modal-title {
+      color: rgb(0, 0, 0) !important;
+    }
+    */
+
+    /* NEU/ANGEPASST: Styling für das Modal-Fenster */
+    #modal-card-content {
+      background-color: #F3F4F6; /* leicht grau für Light Mode (Tailwind gray-100) */
+      border-radius: 0.75rem; /* rounded-xl */
+      padding: 2rem; /* p-8 */
+      width: 100%;
+      max-width: 42rem; /* max-w-2xl */
+      overflow-y: auto;
+      text-align: left;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+    }
+
+    [data-theme="dark"] #modal-card-content {
+      background-color: #1E3A8A; /* dunkelblau für Dark Mode (Tailwind blue-900) */
+    }
+
+    /* Textfarbe im Modal für Light Mode sicherstellen */
+    #modal-title,
+    #modal-content { /* Bezieht sich auf die <p> mit id="modal-content" */
+      color: #111827; /* Dunkler Text für Light Mode (Tailwind gray-900) */
+    }
+    
+    /* Im Dark Mode greift die generelle Regel: [data-theme="dark"] p, h3 { color: white !important; } */
+    /* Daher ist hier keine explizite Farbänderung für #modal-title und #modal-content für den Dark Mode mehr nötig,
+       solange die oben genannten spezifischen Schwarz-Regeln entfernt sind. */
+
+
+    a, button {
+      cursor: none !important;
+    }
+
+    input, textarea {
+      caret-color: transparent;
+    }
+
+    #cursor {
+      width: 16px;
+      height: 16px;
+      background-color: rgba(30, 41, 59, 0.7);
+      border-radius: 9999px;
+      position: fixed;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, transform 0.05s ease-out;
+      z-index: 9999;
+    }
+
+    [data-theme="dark"] #cursor {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .hovered {
+      width: 30px !important;
+      height: 30px !important;
+      background-color: rgba(30, 41, 59, 0.8) !important;
+    }
+
+    .switch {
+      display: block;
+      --width-of-switch: 3.5em;
+      --height-of-switch: 2em;
+      --size-of-icon: 1.4em;
+      --slider-offset: 0.3em;
+      position: relative;
+      width: var(--width-of-switch);
+      height: var(--height-of-switch);
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #f4f4f5;
+      transition: 0.4s;
+      border-radius: 30px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: var(--size-of-icon);
+      width: var(--size-of-icon);
+      border-radius: 20px;
+      left: var(--slider-offset);
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(40deg, #ff0080, #ff8c00 70%);
+      transition: 0.4s;
+    }
+
+    input:checked + .slider {
+      background-color: #303136;
+    }
+
+    input:checked + .slider:before {
+      left: calc(100% - (var(--size-of-icon) + var(--slider-offset)));
+      background: #303131;
+      box-shadow: inset -3px -2px 5px -2px #8983f7, inset -10px -4px 0 0 #a3dafb;
+    }
+
+    .background-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      z-index: -2;
+      transition: background 0.3s;
+    }
+
+    [data-theme="dark"] .background-gradient {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+    }
+
+    .noise-overlay {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+      opacity: 0.05;
+      z-index: -1;
+      pointer-events: none;
+    }
+    #cursor-text {
+      font-size: 12px;
+      padding: 2px 6px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+    }
+
+    .bg-light {
+      background-color: transparent;
+    }
+
+    .bg-dark {
+      background-color: transparent;
+    }
+    [data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.95);
+      background-color: white;
+      color: black;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      transition: all 0.2s ease;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    [data-tooltip]:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    [data-tooltip]::before {
+      content: "";
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: white transparent transparent transparent; /* Pfeilspitze für hellen Modus */
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 49;
+    }
+    [data-tooltip]:hover::before {
+      opacity: 1;
+    }
+
+    [data-theme="dark"] [data-tooltip]::after {
+        background-color: #1f2937; /* Dunkler Hintergrund für Tooltip im Dark Mode */
+        color: white; /* Heller Text für Tooltip im Dark Mode */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Angepasster Schatten */
+    }
+    [data-theme="dark"] [data-tooltip]::before {
+        border-color: #1f2937 transparent transparent transparent; /* Pfeilspitze für dunklen Modus */
+    }
+    /* Scroll progress bar */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 0%;
+  z-index: 9999;
+  background: linear-gradient(90deg, #696969, #bab8bb, #fcf9fb);
+  box-shadow: 0 0 8px rgba(139, 139, 139, 0.6);
+  border-radius: 0 4px 4px 0;
+  transition: width 0.15s ease-out, background 1s linear;
+  animation: shine 3s infinite linear;
+  background-size: 200% 100%;
+}
+@keyframes shine {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+
+  </style>
+</head>
+<body>
+  <div id="scroll-progress"></div>
+
+  <div class="background-gradient"></div>
+  <div class="noise-overlay"></div>
+  <div id="cursor"></div>
+  <div id="cursor-text" class="fixed text-sm font-semibold text-white pointer-events-none z-[9999] transition-opacity duration-200 opacity-0"></div>
+
+  <nav class="fixed top-0 left-0 w-full z-50 backdrop-blur shadow-sm bg-light dark:bg-dark">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <h1 class="text-xl font-bold">Michael Eaton</h1>
+        <div
+        class="relative inline-flex items-center justify-center p-2 cursor-pointer rounded-md "
+        data-tooltip="Located in Switzerland"
+      >
+        <img src="swissflag.png" alt="Swiss Flag" class="w-6 h-6" />
+      </div>
+      </div>
+      <div class="flex items-center space-x-6">
+        <ul class="hidden sm:flex space-x-4">
+          <li><a href="index.html" class="nav-link hover:text-blue-500 transition"><i data-lucide="home"></i></a></li>
+          <li><a href="meuebermich.html" class="nav-link hover:text-blue-500 transition"><i data-lucide="user"></i></a></li>
+          <li><a href="meprojekte.html" class="nav-link text-blue-500 font-bold"><i data-lucide="folder"></i></a></li>
+          <li><a href="meagenda.html" class="nav-link hover:text-blue-500 transition"><i data-lucide="calendar"></i></a></li>
+          <li><a href="mekontakt.html" class="nav-link hover:text-blue-500 transition"><i data-lucide="mail"></i></a></li>
+        </ul>
+        <label class="switch">
+          <input type="checkbox" id="dark-toggle" />
+          <span class="slider"></span>
+        </label>
+        <div class="sm:hidden relative">
+          <button id="menu-toggle" class="text-blue-500 focus:outline-none">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+          <div id="mobile-menu" class="absolute right-0 top-12 w-48 bg-light dark:bg-dark border border-slate-700 rounded-xl shadow-lg opacity-0 scale-95 pointer-events-none transition-all duration-200 ease-out">
+            <ul class="flex flex-col text-center">
+              <li><a href="index.html" class="block px-4 py-2 hover:bg-slate-200 dark:hover:bg-slate-700">Home</a></li>
+              <li><a href="meuebermich.html" class="block px-4 py-2 hover:bg-slate-200 dark:hover:bg-slate-700">About me</a></li>
+              <li><a href="meprojekte.html" class="block px-4 py-2 hover:bg-slate-200 dark:hover:bg-slate-700">Projects</a></li>
+              <li><a href="meagenda.html" class="block px-4 py-2 hover:bg-slate-200 dark:hover:bg-slate-700">Agenda</a></li>
+              <li><a href="mekontakt.html" class="block px-4 py-2 hover:bg-slate-200 dark:hover:bg-slate-700">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="pt-28 pb-24 text-center px-6">
+    <div data-aos="fade-up">
+      <h2 class="text-5xl font-extrabold">My Projects</h2>
+      <p class="text-xl mt-3 text-slate-300"> Insights into my work and developments</p>
+    </div>
+  </section>
+
+  <section class="py-20 px-6">
+    <div class="flex flex-col items-center sm:flex-row sm:justify-center sm:space-x-6 space-y-6 sm:space-y-0" data-aos="fade-up">
+      <div onclick="openModal('My own website', 'I developed my personal website from scratch using HTML, TailwindCSS, and JavaScript. It includes dark mode, cursor effects, a responsive design, and a contact form. I also included access to my personal GPT, which can answer questions about me and my website. I will be working on this project throughout my entire apprenticeship—whenever I have free time or am looking for a creative distraction.')" class="cursor-pointer bg-light dark:bg-dark border border-slate-700 rounded-xl shadow-md w-72 sm:w-80 min-h-[220px] p-6 hover:scale-105 transition transform text-center">
+        <p class="text-xl font-bold">Own website</p>
+      </div>
+
+      <div onclick="openModal('Contact form with EmailJS', 'A simple contact form implemented with EmailJS that sends emails directly without a backend—ideal for quick feedback. I used EmailJS for this because it makes sending emails with templates particularly easy. This way, people who want to contact me can contact me directly via my website.')" class="cursor-pointer bg-light dark:bg-dark border border-slate-700 rounded-xl shadow-md w-72 sm:w-80 min-h-[220px] p-6 hover:scale-105 transition transform text-center">
+        <p class="text-xl font-bold">Contact form with EmailJS</p>
+      </div>
+
+      <div onclick="openModal('Automated Email Notifications with Node.js', 'I created this project as my final assignment for Module 122 at TBZ. It\'s a Node.js script that runs automatically every day via a cron job. Depending on the weekday, it sends a reminder email to inform me whether I have school or work. The emails are sent using Nodemailer via Gmail SMTP. The script runs on a Linux server and is designed to operate reliably in the background without any user interface.')" class="cursor-pointer bg-light dark:bg-dark border border-slate-700 rounded-xl shadow-md w-72 sm:w-80 min-h-[220px] p-6 hover:scale-105 transition transform text-center">
+        <p class="text-xl font-bold">Sending emails in Bash</p>
+      </div>
+    </div>
+  </section>
+  <button
+  id="openMichaelGPT"
+  onclick="window.open('https://chatgpt.com/g/g-6807701eaf9881919624cacc6b2ab917-michaelgpt', '_blank')"
+  class="fixed bottom-6 right-6 bg-white/10 dark:bg-white/10 backdrop-blur text-white font-semibold px-5 py-3 rounded-full shadow-lg z-[50] border border-white/20 transition-all duration-300 ease-in-out hover:bg-white/20 hover:scale-105 hover:shadow-2xl"
+  >
+  open MichaelGPT
+  </button>
+
+  <footer class="py-6 text-center text-slate-400 backdrop-blur bg-light dark:bg-dark">
+    📧 <a href="mailto:michael.eaton212@gmail.com" class="text-blue-500 hover:underline">michael.eaton212@gmail.com</a>
+  </footer>
+
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50 p-4"> <div id="modal-card-content">
+      <h3 id="modal-title" class="text-2xl font-bold mb-4"></h3>
+      <p id="modal-content" class=""></p>
+      <div class="w-full flex justify-center mt-6">
+        <button onclick="closeModal()" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script> 
+
+  <script>
+    AOS.init();
+    lucide.createIcons();
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const cursor = document.getElementById("cursor");
+        const cursorText = document.getElementById("cursor-text");
+
+        if (cursor) {
+            document.addEventListener("mousemove", (e) => {
+                cursor.style.top = `${e.clientY}px`;
+                cursor.style.left = `${e.clientX}px`;
+                if (cursorText) { 
+                    cursorText.style.transform = `translate(${e.clientX}px, ${e.clientY - 30}px)`;
+                }
+            });
+
+            // Apply hover effect to all relevant elements
+            document.querySelectorAll(".button, h1, h2, h3, h4, #contact-form, a, .bg-white, .bg-light, .project, .cursor-pointer, .switch").forEach(element => {
+                element.addEventListener("mouseenter", () => {
+                    cursor.classList.add("hovered");
+                });
+
+                element.addEventListener("mouseleave", () => {
+                    cursor.classList.remove("hovered");
+                });
+            });
+        } else {
+            console.warn("Element '#cursor' not found.");
+        }
+
+        // EmailJS Initialisierung
+        if (typeof emailjs !== "undefined") {
+            emailjs.init("PqPY56nEQgsXhzvaJ"); // Ersetze mit deinem Public Key
+        } else {
+            console.error("EmailJS could not be loaded.");
+            return;
+        }
+
+        // Formular-Verarbeitung
+        const form = document.getElementById("contact-form");
+        if (form) {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                let name = document.getElementById("name").value;
+                let email = document.getElementById("email").value;
+                let message = document.getElementById("message").value;
+
+                if (!name || !email || !message) {
+                    alert("Bitte fülle alle Felder aus!");
+                    return;
+                }
+
+                let templateParams = {
+                    from_name: name,
+                    from_email: email,
+                    message: message
+                };
+
+                emailjs.send("service_6rczoex", "template_bnv5z4o", templateParams)
+                    .then(function (response) {
+                        alert("Nachricht erfolgreich gesendet!");
+                        form.reset();
+                    }, function (error) {
+                        alert("Fehler beim Senden der Nachricht. Bitte versuche es erneut.");
+                        console.error("Fehler:", error);
+                    });
+            });
+        } else {
+            console.warn("Form '#contact-form' not found.");
+        }
+    });
+
+    const toggle = document.getElementById("dark-toggle");
+    const html = document.documentElement;
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      html.setAttribute("data-theme", savedTheme);
+      toggle.checked = savedTheme === "dark";
+    } else {
+      html.setAttribute("data-theme", "dark");
+      toggle.checked = true;
+    }
+
+    toggle.addEventListener("change", () => {
+      const newTheme = toggle.checked ? "dark" : "light";
+      html.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+    });
+
+    function openModal(title, content) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-content').innerHTML = content;
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modal').classList.add('flex');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('flex');
+      document.getElementById('modal').classList.add('hidden');
+    }
+
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    if(menuToggle && mobileMenu) {
+        menuToggle.addEventListener("click", () => {
+            const isOpen = !mobileMenu.classList.contains("opacity-0");
+            if (isOpen) {
+            mobileMenu.classList.add("opacity-0", "scale-95", "pointer-events-none");
+            mobileMenu.classList.remove("opacity-100", "scale-100", "pointer-events-auto");
+            } else {
+            mobileMenu.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+            mobileMenu.classList.add("opacity-100", "scale-100", "pointer-events-auto");
+            }
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!menuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+            mobileMenu.classList.add("opacity-0", "scale-95", "pointer-events-none");
+            mobileMenu.classList.remove("opacity-100", "scale-100", "pointer-events-auto");
+            }
+        });
+    }
+
+    const gptButton = document.getElementById("openMichaelGPT");
+    const cursorText = document.getElementById("cursor-text"); // Re-declare for scope if needed outside DOMContentLoaded
+
+    if(gptButton && cursorText) {
+        gptButton.addEventListener("mouseenter", () => {
+            document.getElementById("cursor").classList.add("hovered"); // Use document.getElementById for the cursor
+            cursorText.textContent = "MichaelGPT Fragen";
+            cursorText.style.opacity = "1";
+        });
+
+        gptButton.addEventListener("mouseleave", () => {
+            document.getElementById("cursor").classList.remove("hovered"); // Use document.getElementById for the cursor
+            cursorText.textContent = "";
+            cursorText.style.opacity = "0";
+        });
+    }
+    // Scroll progress bar
+window.addEventListener('scroll', () => {
+  const scrollProgress = document.getElementById('scroll-progress');
+  const scrollTop = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  const scrollPercent = (scrollTop / docHeight) * 100;
+  scrollProgress.style.width = `${scrollPercent}%`;
+});
+
+  </script>
+</body>
+</html>
